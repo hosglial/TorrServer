@@ -89,10 +89,11 @@ const Torrent = ({ torrent }) => {
   const ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
   const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream
   const isMac = !isIOS && /Macintosh|Mac OS X/.test(ua)
+  const absolutePlaylistLink = new URL(fullPlaylistLink, window.location.href).href
   const playerLink = isIOS
-    ? `vlc-x-callback://x-callback-url/stream?url=${encodeURIComponent(fullPlaylistLink)}`
+    ? `vlc-x-callback://x-callback-url/stream?url=${encodeURIComponent(absolutePlaylistLink)}`
     : isMac
-    ? `iina://weblink?url=${encodeURIComponent(fullPlaylistLink)}`
+    ? `iina://weblink?url=${encodeURIComponent(absolutePlaylistLink)}`
     : null
 
   const detailedInfoDialogRef = useOnStandaloneAppOutsideClick(closeDetailedInfo)
