@@ -131,6 +131,15 @@ const Torrent = ({ torrent }) => {
               captionSrc={getVideoCaption(playableVideoList[0].path)}
               onNotSupported={() => setIsSupported(false)}
             />
+          ) : playerLink ? (
+            <StyledButton
+              onClick={() => {
+                window.location.href = playerLink
+              }}
+            >
+              <LaunchIcon />
+              <span>{t('OpenInPlayer')}</span>
+            </StyledButton>
           ) : (
             <StyledButton
               onClick={() => {
@@ -139,17 +148,6 @@ const Torrent = ({ torrent }) => {
             >
               <PlayArrowIcon />
               <span>{t('Playlist')}</span>
-            </StyledButton>
-          )}
-
-          {playerLink && (
-            <StyledButton
-              onClick={() => {
-                window.location.href = playerLink
-              }}
-            >
-              <LaunchIcon />
-              <span>{t('OpenInPlayer')}</span>
             </StyledButton>
           )}
 
