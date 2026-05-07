@@ -23,6 +23,15 @@ const TorrentFunctions = memo(
     const partialPlaylistLink = `${fullPlaylistLink}&fromlast`
     const magnet = `magnet:?xt=urn:btih:${hash}&dn=${encodeURIComponent(name || title)}`
 
+    const ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
+    const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream
+    const isMac = !isIOS && /Macintosh|Mac OS X/.test(ua)
+    const playerLink = isIOS
+      ? `vlc-x-callback://x-callback-url/stream?url=${encodeURIComponent(fullPlaylistLink)}`
+      : isMac
+        ? `iina://weblink?url=${encodeURIComponent(fullPlaylistLink)}`
+        : null
+
     return (
       <>
         {!isOnlyOnePlayableFile && !!viewedFileList?.length && (
@@ -71,6 +80,13 @@ const TorrentFunctions = memo(
             <a style={{ textDecoration: 'none' }} href={fullPlaylistLink}>
               <Button style={{ width: '100%' }} variant='contained' color='primary' size='large'>
                 {t('DownloadPlaylist')}
+              </Button>
+            </a>
+          )}
+          {playerLink && (
+            <a style={{ textDecoration: 'none' }} href={playerLink}>
+              <Button style={{ width: '100%' }} variant='contained' color='primary' size='large'>
+                {t('OpenInPlayer')}
               </Button>
             </a>
           )}

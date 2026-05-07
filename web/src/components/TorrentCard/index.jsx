@@ -4,6 +4,7 @@ import {
   PlayArrow as PlayArrowIcon,
   Close as CloseIcon,
   Delete as DeleteIcon,
+  Launch as LaunchIcon,
 } from '@material-ui/icons'
 import { getPeerString, humanizeSize, humanizeSpeed, removeRedundantCharacters } from 'utils/Utils'
 import { playlistTorrHost, streamHost, torrentsHost } from 'utils/Hosts'
@@ -85,6 +86,15 @@ const Torrent = ({ torrent }) => {
 
   const fullPlaylistLink = `${playlistTorrHost()}/${encodeURIComponent(parsedTitle || 'file')}.m3u?link=${hash}&m3u`
 
+  const ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
+  const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream
+  const isMac = !isIOS && /Macintosh|Mac OS X/.test(ua)
+  const playerLink = isIOS
+    ? `vlc-x-callback://x-callback-url/stream?url=${encodeURIComponent(fullPlaylistLink)}`
+    : isMac
+      ? `iina://weblink?url=${encodeURIComponent(fullPlaylistLink)}`
+      : null
+
   const detailedInfoDialogRef = useOnStandaloneAppOutsideClick(closeDetailedInfo)
   // main categories
   const catIndex = TORRENT_CATEGORIES.findIndex(e => e.key === category)
@@ -129,6 +139,17 @@ const Torrent = ({ torrent }) => {
             >
               <PlayArrowIcon />
               <span>{t('Playlist')}</span>
+            </StyledButton>
+          )}
+
+          {playerLink && (
+            <StyledButton
+              onClick={() => {
+                window.location.href = playerLink
+              }}
+            >
+              <LaunchIcon />
+              <span>{t('OpenInPlayer')}</span>
             </StyledButton>
           )}
 
