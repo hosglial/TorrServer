@@ -92,8 +92,8 @@ const Torrent = ({ torrent }) => {
   const playerLink = isIOS
     ? `vlc-x-callback://x-callback-url/stream?url=${encodeURIComponent(fullPlaylistLink)}`
     : isMac
-      ? `iina://weblink?url=${encodeURIComponent(fullPlaylistLink)}`
-      : null
+    ? `iina://weblink?url=${encodeURIComponent(fullPlaylistLink)}`
+    : null
 
   const detailedInfoDialogRef = useOnStandaloneAppOutsideClick(closeDetailedInfo)
   // main categories
